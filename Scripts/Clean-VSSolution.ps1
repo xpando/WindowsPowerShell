@@ -1,22 +1,12 @@
 [cmdletbinding()]
 param(
   [parameter(ValueFromPipeline=$true,ValueFromPipelineByPropertyName=$true)]
-  [string]$path = "."
+  [string]$path = ".",
+  [string[]]$dirNames = @("obj", "bin")
 )
 
-write-host $path
-Push-Location $path
-try {
-  $dirs = Get-ChildItem -recurse |? { $_.GetType().Name.ToString() -eq "DirectoryInfo" -and $_.Name -eq "bin" -or $_.Name -eq "obj" }
-  
-  if ($dirs.Length -gt 0) {
-    $dirs | %{ Write-Host "Removing " $_.FullName }
-    $dirs | %{ Remove-Item -recurse -path $_.FullName -force }
-  }
-  else { 
-    Write-Host "Solution is clean"
-  }
-}
-finally {
-  Pop-Location
+foreach ($dirName in $dirNames) {
+    $dirs = dir $path -Recurse -Directory $dirName | sort -Descending -Property FullName
+    $dirs |% { Write-Host "Removing $($_.FullName)" }
+    $dirs | del -Recurse -Force -ErrorAction SilentlyContinue
 }
