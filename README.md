@@ -29,10 +29,16 @@ Use scoop to install common utilities
 Configure PowerShell profile. You may want to fork my repo so you can track your own customizations.
 
 ``` PowerShell
+  # remove existing profile if it exists. WARNING: this will delete your existing profile. Backup your existing profile first if you
+  # want to keep any settings that you have already made there
+  if (test-path $env:USERPROFILE\Documents\WindowsPowerShell) { rm -Recurse -Force $env:USERPROFILE\Documents\WindowsPowerShell } 
+
   # Clone into the standard PowerShell profile directory
   cd $env:USERPROFILE\Documents
   git clone https://github.com/xpando/WindowsPowerShell.git
 ```
+
+##### IMPORTANT! Close your current PowerShell window and start a new one as admin so that the new profile settings will take effect
 
 Setup ConEmu - Includes the color scheme you see in the screenshot.
 
@@ -48,6 +54,8 @@ Setup ConEmu - Includes the color scheme you see in the screenshot.
   # download and unzip ConEmu binaries
   .\install.ps1
 ```
+
+Now you can run **_ConEmu.exe_** or **_ConEmu64.exe_** if you are a 64bit OS and continue.
 
 Customize pshazz theme
 
