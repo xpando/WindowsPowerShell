@@ -1,3 +1,5 @@
+Write-Host "Getting system information..."
+
 $computer    = gwmi Win32_ComputerSystem
 $os          = gwmi Win32_OperatingSystem
 $processor   = gwmi Win32_Processor
@@ -17,27 +19,55 @@ $info = `
     "Network:  ", "$ipAddresses",
     "Shell:    ", "PowerShell v$($Host.Version)"
 
-$logo = `
-"          .:::..                    `r`n", "red",
-"       ccccccccccc.                 `r`n", "red",
-"      :ccccccccccc", "red", " :Cc.      :c     `r`n", "green",
-"      ccccccccccc.", "red", " ooooooooooo.     ", "green",  "$($info[0])",  "gray", "$($info[1])`r`n",  "white",
-"     :cccccccccc:", "red", " cooooooooooc      ", "green",  "$($info[2])",  "gray", "$($info[3])`r`n",  "white",
-"    .oc::'':cccc", "red", " .ooooooooooo.      ", "green",  "$($info[4])",  "gray", "$($info[5])`r`n",  "white",
-"     .:ccocc.", "blue", "    oooooooooooc       ", "green", "$($info[6])",  "gray", "$($info[7])`r`n",  "white",
-"   :oooooooocoo", "blue", "   .coCoCooc.        ", "green", "$($info[8])",  "gray", "$($info[9])`r`n",  "white",
-"   oooooooooco.", "blue", " COo. ", "yellow", "''", "green", " .cCc        ", "yellow", "$($info[10])", "gray", "$($info[11])`r`n", "white",
-"  :ooooooooooc", "blue", " cOCCCCCCCCCC:        ", "yellow", "$($info[12])", "gray", "$($info[13])`r`n", "white",
-"  ooooooooooo.", "blue", " CCCCCCCCCCO:         ", "yellow", "$($info[14])", "gray", "$($info[15])`r`n", "white",
-" cc:.   .:co:", "blue", " oOCCCCCCCCOo          ", "yellow", "$($info[16])", "gray", "$($info[17])`r`n", "white",
-"             .OCCCCCCCCCO.          `r`n", "yellow",
-"               .coCCCoc.            `r`n", "yellow"
-
 clear
-for ($i = 0; $i -lt $logo.Length; $i+=2) {
-    $str = $logo[$i]
-    $color = $logo[$i+1]
-    Write-Host $str -f $color -nonewline
+
+function WriteTo-Pos (
+    [string] $str, 
+    [int] $x = 0, 
+    [int] $y = 0,
+    [string] $bgc = [console]::BackgroundColor,
+    [string] $fgc = [console]::ForegroundColor
+)
+{
+      if($x -ge 0 -and $y -ge 0 -and $x -le [Console]::WindowWidth -and $y -le [Console]::WindowHeight)
+      {
+            $saveY = [console]::CursorTop
+            $offY = [console]::WindowTop       
+            [console]::setcursorposition($x,$offY+$y)
+            Write-Host -Object $str -BackgroundColor $bgc -ForegroundColor $fgc -NoNewline
+            [console]::setcursorposition(0,$saveY)
+      }
+}
+
+# Print ASCII logo
+if ($Host.UI.RawUI.MaxWindowSize.Width -ge 40) {
+    $fgc = $Host.UI.RawUI.ForegroundColor
+    $bgc = $Host.UI.RawUI.BackgroundColor
+    # TODO: Print a different logo depending on the version of windows
+    if ((test-path env:ConEmuANSI) -and ($env:ConEmuANSI -eq "ON")) {
+        cat $psscriptroot\..\logos\flag2.ans
+    } else {
+        cat $psscriptroot\..\logos\flag2.txt
+    }
+    $Host.UI.RawUI.ForegroundColor = $fgc
+    $Host.UI.RawUI.BackgroundColor = $bgc
+}
+
+# Print system information
+if ($Host.UI.RawUI.MaxWindowSize.Width -ge 80) {
+    $y = 3; $x = 45
+    for ($i = 0; $i -lt $info.Length; $i+=2) {
+        $label = $info[$i]
+        $value = $info[$i+1]
+        $maxW = $Host.UI.RawUI.MaxWindowSize.Width - $x - $label.Length
+        if ($maxW -lt 0) { $maxW = 0 }
+        if ($value.Length -gt $maxW) { $value = $value.Substring(0, $maxW) }
+        WriteTo-Pos -str $label -x $x -y $y -fgc "gray"
+        $x += $label.Length
+        WriteTo-Pos -str $value -x $x -y $y -fgc "white"
+        $x = 45
+        $y++
+    }
 }
 
 Write-Host
