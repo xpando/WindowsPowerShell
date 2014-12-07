@@ -2,7 +2,11 @@
 
 ## Setup Instructions
 
-Run a powershell prompt as admin
+Run a powershell prompt as admin and ensure you can run unsigned scripts
+
+```Powershell
+Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope CurrentUser 
+```
 
 Install scoop
 
