@@ -61,7 +61,7 @@ Customize pshazz theme
 
 ```PowerShell
   # download my pshazz theme shown in screenshot 
-  $url = 'https://gist.githubusercontent.com/xpando/d42df2c0f014d710db42/raw/0b6f18bdf73eca05e5e3e0f4169249166d4af6c4/xpando.json'
+  $url = 'https://gist.githubusercontent.com/xpando/d42df2c0f014d710db42/raw/cce3f6ca874bd18d316bca946bda34a2bd1efe43/xpando.json'
   if (!(test-path $env:USERPROFILE\pshazz)) { md $env:USERPROFILE\pshazz}
   (new-object net.webclient).downloadstring($url) | out-file $env:USERPROFILE\pshazz\xpando.json
   pshazz use xpando
