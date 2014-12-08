@@ -93,3 +93,7 @@ Clean-VSSolution.ps1 -dirNames '.svn', '_svn'
 ```
 
 Several other useful scripts are included in the ~\Documents\WindowsPowerShell\Scripts folder.
+
+## Logos
+
+The logos were made using [jp2a](http://csl.name/jp2a/) and cleaned up using [PabloDraw](http://picoe.ca/products/pablodraw/)
