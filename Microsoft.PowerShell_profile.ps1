@@ -11,6 +11,7 @@ if ($host.Version.Major -lt 5) { Import-Module PsGet }
 Import-Module PSReadLine
 Import-Module PathUtils
 Import-Module VisualStudio
+Import-Module go
 
 if ($host.Name -eq 'ConsoleHost') {
     Import-Module PSReadline -ErrorAction SilentlyContinue
