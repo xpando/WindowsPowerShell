@@ -18,7 +18,7 @@ while (-not $env -and $next) {
 }
 
 if ($env) {
-  $machines = Invoke-Octopus -ApiKey $ApiKey -Path $env.Links.Machines # | select -ExpandProperty Items | select -ExpandProperty Name
+  $machines = Invoke-Octopus -ApiKey $ApiKey -Path $env.Links.Machines
   do {
     foreach ($machine in $machines.Items) {
       Write-Output $machine
