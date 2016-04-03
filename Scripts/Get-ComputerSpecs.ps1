@@ -36,8 +36,8 @@ process {
       foreach ($nic in $nics) {
         $adapter = $nic.GetRelated('win32_NetworkAdapter')
         switch -regex ($adapter.NetConnectionID) {
-          "^Nic\d+-BR-" { $br = $nic.IPAddress }
-          "^Nic\d+-FR-" { $fr = $nic.IPAddress }
+          "-BR-" { $br = $nic.IPAddress }
+          "-FR-" { $fr = $nic.IPAddress }
         }
       }
     }
