@@ -1,8 +1,10 @@
-[CmdletBinding()]
+function tail{
+[cmdletbinding()]
 param(
-  [Parameter(ValueFromPipeline)]
-  [String]$path,
-  [Int]$lineCount = 5
+  [paraMetEr(ValueFromPipeline)]
+  [object]$path,
+  [int]$lineCount = 5
 )
 
 cat $path -tail $lineCount -wait
+}
