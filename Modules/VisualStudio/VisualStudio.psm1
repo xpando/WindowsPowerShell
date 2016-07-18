@@ -1,4 +1,4 @@
-function Import-VSEnvironment($version = "12") {
+function Import-VSEnvironment($version = "14") {
   function importEnvironment($file) {
     $cmd = "`"$file`" & set"
     cmd /c $cmd |% {
