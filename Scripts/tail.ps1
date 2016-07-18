@@ -1,4 +1,3 @@
-function tail{
 [cmdletbinding()]
 param(
   [paraMetEr(ValueFromPipeline)]
@@ -7,4 +6,4 @@ param(
 )
 
 cat $path -tail $lineCount -wait
-}
+
